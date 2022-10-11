@@ -19,18 +19,8 @@ import tensorflow_datasets as tfds
 import numpy as np
 import matplotlib.pyplot as plt
 from keras import layers
-# from keras_cv.layers import BaseImageAugmentationLayer
 
-# %pip install nvidia-cudnn-cu11
-
-# gpus = tf.config.experimental.list_physical_devices('GPU')
-# gpu_options = tf.GPUoptions(visible_device_list="0")
-# gpu_options.allow_growth = True
-
-# import os
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-
-# get data files
+# get data files from fcc
 !wget https://cdn.freecodecamp.org/project-data/sms/train-data.tsv
 !wget https://cdn.freecodecamp.org/project-data/sms/valid-data.tsv
 
@@ -51,9 +41,7 @@ val_text = df_valid.text.values
 df_valid.label[df_valid.label == 'spam'] = 0
 df_valid.label[df_valid.label == 'ham'] = 1
 val_label = df_valid.label.values
-# print(train_text)
 print(train_label, train_label.shape)
-# print(train_text.shape)
 
 string = ''
 for i in range(len(val_text)):
@@ -91,51 +79,23 @@ train_label = tf.convert_to_tensor(train_label)
 val_label = val_label.astype('int64')
 val_label = val_label.reshape(len(val_label), 1)
 val_label = tf.convert_to_tensor(val_label)
-# print(val_dataset)
-# print(train_label)
 
 print(train_dataset.shape)
 print(train_label.shape)
 print(val_dataset.shape)
 print(val_label.shape)
-print(type(train_dataset))
-
-# embedding = 'https://tfhub.dev/google/universal-sentence-encoder/4'
-# hub_layer = hub.KerasLayer(embedding, input_shape=[], 
-                          #  dtype=tf.string, trainable=True)
 
 model = keras.Sequential([
     layers.Embedding(input_dim = len(vocab)+1, output_dim = 64, input_length = input_length, mask_zero = True), 
-    # layers.Dense(32, activation = 'sigmoid'),
-    # layers.BatchNormalization(),
     layers.LSTM(64, return_sequences = True),
-    # layers.Dropout(0.2),
-    # layers.BatchNormalization(),
     layers.LSTM(128, return_sequences = False),
-    # layers.Dropout(0.2),
     layers.Dense(32, activation = 'sigmoid'),
-    # layers.BatchNormalization(),
     layers.Dense(1, activation = 'sigmoid')
 ])
 model.summary()
 
 model.compile(optimizer = 'rmsprop', loss = tf.keras.losses.BinaryCrossentropy(from_logits = False), metrics = tf.keras.metrics.FalsePositives())
 model.fit(train_dataset, train_label, batch_size = 1, epochs = 3, validation_data = (val_dataset, val_label))
-
-pred_text = 'sale. our new mobile service is live now for free. call us now on your phone to watch cheaper.'
-char2idx = {u:i for i, u in enumerate(vocab)}
-arr = list()
-for i in range(len(pred_text)):
-  arr.append([char2idx[c] for c in pred_text[i] if c in char2idx])
-# pred_text = pad_sequences(pred_text, input_length)
-pred_text = np.array(arr).astype('int64')
-pred_text = pred_text.reshape(1, len(pred_text))
-pred_text = pad_sequences(pred_text, input_length)
-print(pred_text)
-print(tf.convert_to_tensor(pred_text).shape)
-prediction = model.predict(tf.convert_to_tensor(pred_text))
-print(prediction)
-print(prediction[0][0])
 
 def predict_message(pred_text):
   char2idx = {u:i for i, u in enumerate(vocab)}
@@ -152,30 +112,3 @@ def predict_message(pred_text):
   else:
     output = [probability, 'spam']
   return output
-
-# Run this cell to test your function and model. Do not modify contents.
-def test_predictions():
-  test_messages = ["how are you doing today",
-                   "sale today! to stop texts call 98912460324",
-                   "i dont want to go. can we try it a different day? available sat",
-                   "our new mobile video service is live. just install on your phone to start watching.",
-                   "you have won £1000 cash! call to claim your prize.",
-                   "i'll bring it tomorrow. don't forget the milk.",
-                   "wow, is your arm alright. that happened to me one time too"
-                  ]
-
-  test_answers = ["ham", "spam", "ham", "spam", "spam", "ham", "ham"]
-  passed = True
-
-  for msg, ans in zip(test_messages, test_answers):
-    prediction = predict_message(msg)
-    print(prediction)
-    if prediction[1] != ans:
-      passed = False
-
-  if passed:
-    print("You passed the challenge. Great job!")
-  else:
-    print("You haven't passed yet. Keep trying.")
-
-test_predictions()
