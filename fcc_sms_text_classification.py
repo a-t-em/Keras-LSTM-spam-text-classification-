@@ -11,8 +11,6 @@ Original file is located at
 !pip install --upgrade tensorflow
 import tensorflow as tf
 from tensorflow import keras
-!pip install tensorflow-hub
-import tensorflow_hub as hub
 import pandas as pd
 !pip install tensorflow-datasets
 import tensorflow_datasets as tfds
