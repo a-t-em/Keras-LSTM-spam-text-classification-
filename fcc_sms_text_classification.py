@@ -19,9 +19,8 @@ import tensorflow_datasets as tfds
 import numpy as np
 import matplotlib.pyplot as plt
 from keras import layers
-# from keras_cv.layers import BaseImageAugmentationLayer
 
-# get data files
+# get data 
 !wget https://cdn.freecodecamp.org/project-data/sms/train-data.tsv
 !wget https://cdn.freecodecamp.org/project-data/sms/valid-data.tsv
 
@@ -42,13 +41,10 @@ val_text = df_valid.text.values
 df_valid.label[df_valid.label == 'spam'] = 0
 df_valid.label[df_valid.label == 'ham'] = 1
 val_label = df_valid.label.values
-# print(train_text)
 print(train_label, train_label.shape)
-# print(train_text.shape)
 
 input_length = 80
 al_vocab = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
 alnum_vocab = ['£', '!', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 from keras_preprocessing.sequence import pad_sequences
@@ -78,14 +74,6 @@ train_label = tf.convert_to_tensor(train_label)
 val_label = val_label.astype('int64')
 val_label = val_label.reshape(len(val_label), 1)
 val_label = tf.convert_to_tensor(val_label)
-# print(val_dataset)
-# print(train_label)
-
-print(al_train_dataset.shape)
-print(train_label.shape)
-print(al_val_dataset.shape)
-print(val_label.shape)
-print(type(al_train_dataset))
 
 al_model = keras.Sequential([
     layers.Embedding(input_dim = len(al_vocab)+1, output_dim = 64, input_length = input_length, mask_zero = True), 
@@ -138,30 +126,3 @@ def predict_message(pred_text):
   else:
       output = [probability, 'spam']
   return output
-
-# Run this cell to test your function and model. Do not modify contents.
-def test_predictions():
-  test_messages = ["how are you doing today",
-                   "sale today! to stop texts call 98912460324",
-                   "i dont want to go. can we try it a different day? available sat",
-                   "our new mobile video service is live. just install on your phone to start watching.",
-                   "you have won £1000 cash! call to claim your prize.",
-                   "i'll bring it tomorrow. don't forget the milk.",
-                   "wow, is your arm alright. that happened to me one time too"
-                  ]
-
-  test_answers = ["ham", "spam", "ham", "spam", "spam", "ham", "ham"]
-  passed = True
-
-  for msg, ans in zip(test_messages, test_answers):
-    prediction = predict_message(msg)
-    print(prediction)
-    if prediction[1] != ans:
-      passed = False
-
-  if passed:
-    print("You passed the challenge. Great job!")
-  else:
-    print("You haven't passed yet. Keep trying.")
-
-test_predictions()
