@@ -5,9 +5,7 @@ This is a Python script for a spam text classification model. The model is train
 - Keras
 - TensorFlow
 - Pandas
-- TensorFlow Datasets
 - NumPy
-- Matplotlib
 
 **Dataset**<br>
 The dataset consists of two files provided by [freeCodeCamp](https://www.freecodecamp.org/learn/machine-learning-with-python/machine-learning-with-python-projects/neural-network-sms-text-classifier):
