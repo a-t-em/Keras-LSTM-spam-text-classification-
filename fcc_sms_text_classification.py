@@ -12,10 +12,7 @@ Original file is located at
 import tensorflow as tf
 from tensorflow import keras
 import pandas as pd
-!pip install tensorflow-datasets
-import tensorflow_datasets as tfds
 import numpy as np
-import matplotlib.pyplot as plt
 from keras import layers
 
 # get data 
