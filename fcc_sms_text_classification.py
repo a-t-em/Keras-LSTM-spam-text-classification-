@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1q1lw7HPVrXmtgwyFvgUnexvyOz0bN8Oh
 """
 
-!pip install keras_cv
+!pip install keras_preprocessing
 !pip install --upgrade tensorflow
 import tensorflow as tf
 from tensorflow import keras
