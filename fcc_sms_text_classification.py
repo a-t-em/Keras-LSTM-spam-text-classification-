@@ -109,7 +109,6 @@ def formatText(pred_text, vocab):
   return pred_text
 
 def predict_message(pred_text):
-  
   prediction1 = al_model.predict(tf.convert_to_tensor(formatText(pred_text, al_vocab)))
   prediction2 = alnum_model.predict(tf.convert_to_tensor(formatText(pred_text, alnum_vocab)))
   prob1 = prediction1[0][0]
