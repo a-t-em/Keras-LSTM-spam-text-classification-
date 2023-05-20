@@ -29,12 +29,12 @@ df_valid = pd.read_csv(test_file_path, sep = '\t', header = 0, names = ['label',
 df_valid.head()
 
 train_text = df_train.text.values
-df_train.label[df_train.label == 'spam'] = 0
-df_train.label[df_train.label == 'ham'] = 1
+df_train.label[df_train.label == 'spam'] = 1
+df_train.label[df_train.label == 'ham'] = 0
 train_label = df_train.label.values
 val_text = df_valid.text.values
-df_valid.label[df_valid.label == 'spam'] = 0
-df_valid.label[df_valid.label == 'ham'] = 1
+df_valid.label[df_valid.label == 'spam'] = 1
+df_valid.label[df_valid.label == 'ham'] = 0
 val_label = df_valid.label.values
 print(train_label, train_label.shape)
 
@@ -116,7 +116,7 @@ def predict_message(pred_text):
   print(prob1, prob2)
   probability = (prob1+prob2)/2
   if probability > 0.5:
-    output = [probability, 'ham']
+    output = [probability, 'spam']
   else:
-      output = [probability, 'spam']
+      output = [probability, 'ham']
   return output
