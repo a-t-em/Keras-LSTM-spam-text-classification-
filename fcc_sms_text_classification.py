@@ -14,6 +14,7 @@ from tensorflow import keras
 import pandas as pd
 import numpy as np
 from keras import layers
+from keras_preprocessing.sequence import pad_sequences
 
 # get data 
 !wget https://cdn.freecodecamp.org/project-data/sms/train-data.tsv
@@ -42,7 +43,6 @@ input_length = 80
 al_vocab = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 alnum_vocab = ['£', '!', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-from keras_preprocessing.sequence import pad_sequences
 def convert_text(text, vocab):
   char2idx = {u:i for i, u in enumerate(vocab)}
   def text_to_int(text):
