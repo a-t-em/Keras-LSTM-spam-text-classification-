@@ -17,4 +17,5 @@ To use the LSTM model, run the script and call the predict_message() function, p
 Both models use two files provided by freeCodeCamp:
 - train-data.tsv: used for training the model.
 - valid-data.tsv: used for validating the model.<br>
+
 You can find more information about the dataset and the task of spam text classification in the [Neural Network SMS Text Classifier project](https://www.freecodecamp.org/learn/machine-learning-with-python/machine-learning-with-python-projects/neural-network-sms-text-classifier).
